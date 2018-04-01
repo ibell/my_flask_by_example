@@ -1,0 +1,26 @@
+version: '3.2'
+
+services:
+  app:
+    build:
+      context: ./
+      dockerfile: app.Dockerfile
+    ports:
+      - '8003:5000'
+    depends_on:
+      - "postgres"
+      - "redis"
+    links:
+      - redis
+    volumes:
+      - type: bind
+        source: "./"
+        target: /app
+
+  postgres:
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=mypass
+
+  redis:
+    image: redis
